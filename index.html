@@ -6,28 +6,43 @@
     <title>Secure Password Generator</title>
     <style>
       :root {
-        --bg: #f4f7fb;
+        --bg: #f3f6fb;
         --card: #ffffff;
-        --text: #1b1f2a;
-        --muted: #677085;
-        --surface: #f9fbff;
-        --accent: #3b82f6;
-        --accent-hover: #2563eb;
-        --border: #d9e1ee;
-        --weak: #ef4444;
-        --medium: #f59e0b;
-        --strong: #22c55e;
+        --surface: #f8faff;
+        --surface-2: #f2f6fd;
+        --text: #1f2937;
+        --muted: #6b7280;
+        --accent: #4f7de8;
+        --accent-hover: #3f69cf;
+        --accent-soft: #e8efff;
+        --border: #dce5f3;
+        --ring: rgba(79, 125, 232, 0.28);
+        --weak: #f6c8cf;
+        --weak-text: #9f1239;
+        --medium: #fde7bc;
+        --medium-text: #92400e;
+        --strong: #c9efd8;
+        --strong-text: #166534;
       }
 
       body[data-theme="dark"] {
-        --bg: #0f172a;
-        --card: #111827;
-        --text: #e5e7eb;
-        --muted: #9ca3af;
-        --surface: #1f2937;
-        --accent: #60a5fa;
-        --accent-hover: #3b82f6;
-        --border: #374151;
+        --bg: #0e1628;
+        --card: #131d32;
+        --surface: #1a263d;
+        --surface-2: #1f2d47;
+        --text: #e7ecf7;
+        --muted: #a3b0c9;
+        --accent: #7aa2ff;
+        --accent-hover: #6290f3;
+        --accent-soft: #263860;
+        --border: #2f4062;
+        --ring: rgba(122, 162, 255, 0.28);
+        --weak: #5f2430;
+        --weak-text: #ffd2da;
+        --medium: #5c431a;
+        --medium-text: #ffe5b1;
+        --strong: #1f5138;
+        --strong-text: #cbf8de;
       }
 
       * {
@@ -36,121 +51,144 @@
 
       body {
         margin: 0;
-        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-        background: var(--bg);
-        color: var(--text);
         min-height: 100vh;
         display: grid;
         place-items: center;
         padding: 1rem;
+        font-family: "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background: radial-gradient(circle at 20% 0%, rgba(79, 125, 232, 0.06), transparent 42%), var(--bg);
+        color: var(--text);
       }
 
       .card {
-        width: min(100%, 560px);
+        width: min(100%, 620px);
         background: var(--card);
-        border-radius: 16px;
-        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.1);
-        padding: 1.25rem;
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: 0 16px 42px rgba(14, 22, 40, 0.1);
+        padding: clamp(1rem, 2vw, 1.5rem);
       }
 
       .top-row {
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        margin-bottom: 0.8rem;
+        justify-content: space-between;
         gap: 0.75rem;
+        margin-bottom: 1.1rem;
       }
 
       h1 {
-        font-size: clamp(1.05rem, 2.1vw, 1.4rem);
         margin: 0;
+        font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+        letter-spacing: 0.1px;
       }
 
-      #password,
-      #customPassword {
+      .subtle {
+        margin: 0.2rem 0 0;
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .password-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 0.6rem;
+        margin-bottom: 1.15rem;
+      }
+
+      input[type="text"] {
         width: 100%;
+        min-width: 0;
         border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 0.85rem;
+        border-radius: 12px;
+        padding: 0.86rem 0.9rem;
         font-size: 1rem;
-        background: var(--surface);
+        line-height: 1.3;
         color: var(--text);
+        background: var(--surface);
+      }
+
+      input[type="text"]::placeholder {
+        color: var(--muted);
+      }
+
+      button,
+      input,
+      a {
+        font: inherit;
       }
 
       #password:focus-visible,
       #customPassword:focus-visible,
       button:focus-visible,
       input:focus-visible {
-        outline: 3px solid rgba(59, 130, 246, 0.3);
+        outline: 3px solid var(--ring);
         outline-offset: 1px;
       }
 
       button {
         border: 0;
-        border-radius: 10px;
-        padding: 0.74rem 0.92rem;
-        font-weight: 600;
+        border-radius: 12px;
         cursor: pointer;
-        transition: background 0.2s ease, transform 0.15s ease;
+        padding: 0.78rem 0.95rem;
+        font-weight: 600;
+        transition: transform 0.12s ease, background 0.2s ease, border-color 0.2s ease;
       }
 
       button:active {
         transform: translateY(1px);
       }
 
-      .theme-toggle,
-      .secondary-btn {
-        background: transparent;
-        border: 1px solid var(--border);
-        color: var(--text);
-      }
-
-      .theme-toggle:hover,
-      .secondary-btn:hover {
-        background: var(--surface);
-      }
-
-      .password-row {
-        display: grid;
-        grid-template-columns: 1fr auto;
-        gap: 0.55rem;
-        margin-bottom: 1rem;
-      }
-
-      .copy-btn,
-      .generate-btn,
-      .check-btn {
+      .btn-primary {
         background: var(--accent);
         color: #fff;
       }
 
-      .copy-btn:hover,
-      .generate-btn:hover,
-      .check-btn:hover {
+      .btn-primary:hover {
         background: var(--accent-hover);
+      }
+
+      .btn-tonal {
+        background: var(--accent-soft);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .btn-tonal:hover {
+        background: var(--surface-2);
+      }
+
+      .btn-outline {
+        background: transparent;
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+
+      .btn-outline:hover {
+        background: var(--surface);
       }
 
       .controls {
         display: grid;
-        gap: 0.75rem;
+        gap: 1rem;
       }
 
-      .length-wrap {
+      .block {
         display: grid;
-        gap: 0.35rem;
+        gap: 0.55rem;
       }
 
       .length-label {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: var(--muted);
         font-size: 0.95rem;
+        color: var(--muted);
       }
 
       .length-value {
-        font-weight: 700;
         color: var(--text);
+        font-weight: 700;
       }
 
       input[type="range"] {
@@ -160,40 +198,42 @@
       .options {
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 0.55rem;
+        gap: 0.6rem;
       }
 
       .option {
         border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 0.55rem 0.6rem;
+        border-radius: 12px;
+        background: var(--surface);
+        padding: 0.62rem 0.7rem;
         display: flex;
         align-items: center;
-        gap: 0.5rem;
+        gap: 0.55rem;
         font-size: 0.95rem;
-      }
-
-      .strength,
-      .checker-panel {
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        padding: 0.7rem 0.75rem;
-        background: var(--surface);
+        min-width: 0;
       }
 
       .strength {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        border-radius: 12px;
+        padding: 0.7rem 0.8rem;
         display: flex;
-        justify-content: space-between;
         align-items: center;
-        font-size: 0.95rem;
+        justify-content: space-between;
+        min-width: 0;
+      }
+
+      .strength-title {
+        margin-right: 0.5rem;
       }
 
       .strength-badge {
-        padding: 0.2rem 0.55rem;
         border-radius: 999px;
-        color: #fff;
+        padding: 0.22rem 0.62rem;
         font-weight: 700;
         font-size: 0.82rem;
+        white-space: nowrap;
       }
 
       .generate-btn,
@@ -204,41 +244,87 @@
       .export-row {
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 0.55rem;
+        gap: 0.6rem;
+      }
+
+      .checker-panel {
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: var(--surface);
+        padding: 0.85rem;
+        min-width: 0;
+        display: grid;
+        gap: 0.75rem;
       }
 
       .section-title {
         margin: 0;
-        font-size: 0.98rem;
+        font-size: 1rem;
+        font-weight: 650;
       }
 
       .checker-grid {
         display: grid;
-        gap: 0.55rem;
-        margin-top: 0.55rem;
+        gap: 0.58rem;
       }
 
       .suggestion-list {
-        margin: 0.5rem 0 0;
-        padding-left: 1rem;
-        color: var(--muted);
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        gap: 0.5rem;
       }
 
-      .suggestion-list li {
-        margin-bottom: 0.35rem;
+      .suggestion-item {
+        border: 1px solid var(--border);
+        background: var(--surface-2);
+        border-radius: 12px;
+        padding: 0.65rem;
+        display: grid;
+        gap: 0.45rem;
+        min-width: 0;
+      }
+
+      .suggestion-password {
+        font-family: "Cascadia Mono", "Fira Code", Menlo, Consolas, monospace;
+        font-size: 0.95rem;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+      }
+
+      .suggestion-meta {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.6rem;
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .mini-copy {
+        padding: 0.35rem 0.58rem;
+        border-radius: 9px;
+        font-size: 0.82rem;
       }
 
       .hint {
         margin: 0;
         color: var(--muted);
-        font-size: 0.85rem;
+        font-size: 0.86rem;
+        line-height: 1.45;
       }
 
-      @media (max-width: 560px) {
+      @media (max-width: 620px) {
         .password-row,
         .options,
         .export-row {
           grid-template-columns: 1fr;
+        }
+
+        .suggestion-meta {
+          align-items: flex-start;
+          flex-direction: column;
         }
       }
     </style>
@@ -246,17 +332,20 @@
   <body>
     <main class="card">
       <div class="top-row">
-        <h1>Secure Password Generator</h1>
-        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Toggle dark mode">🌙 Dark</button>
+        <div>
+          <h1>Secure Password Generator</h1>
+          <p class="subtle">Generate, check, and improve passwords with secure browser randomness.</p>
+        </div>
+        <button id="themeToggle" class="btn-outline" type="button" aria-label="Toggle dark mode">🌙 Dark</button>
       </div>
 
       <div class="password-row">
         <input id="password" type="text" readonly aria-label="Generated password" />
-        <button class="copy-btn" id="copyBtn" type="button">Copy</button>
+        <button class="btn-primary" id="copyBtn" type="button">Copy</button>
       </div>
 
       <section class="controls" aria-label="Password generator settings">
-        <div class="length-wrap">
+        <div class="block">
           <label class="length-label" for="lengthSlider">
             Password length
             <span class="length-value" id="lengthValue">16</span>
@@ -265,38 +354,40 @@
         </div>
 
         <div class="options">
-          <label class="option"><input id="uppercase" type="checkbox" checked /> Uppercase</label>
-          <label class="option"><input id="lowercase" type="checkbox" checked /> Lowercase</label>
+          <label class="option"><input id="uppercase" type="checkbox" checked /> Uppercase letters</label>
+          <label class="option"><input id="lowercase" type="checkbox" checked /> Lowercase letters</label>
           <label class="option"><input id="numbers" type="checkbox" checked /> Numbers</label>
           <label class="option"><input id="symbols" type="checkbox" checked /> Symbols</label>
         </div>
 
         <div class="strength" aria-live="polite">
-          <span>Generated password strength</span>
+          <span class="strength-title">Generated password strength</span>
           <span id="strengthBadge" class="strength-badge">Medium</span>
         </div>
 
-        <button class="generate-btn" id="generateBtn" type="button">Generate Password</button>
+        <button class="btn-primary generate-btn" id="generateBtn" type="button">Generate Password</button>
 
         <div class="export-row">
-          <button class="secondary-btn" id="exportTxtBtn" type="button">Export .txt</button>
-          <button class="secondary-btn" id="exportPdfBtn" type="button">Export PDF</button>
+          <button class="btn-outline" id="exportTxtBtn" type="button">Export .txt</button>
+          <button class="btn-outline" id="exportPdfBtn" type="button">Export PDF</button>
         </div>
 
         <div class="checker-panel" aria-live="polite">
           <p class="section-title">Check your own password strength</p>
           <div class="checker-grid">
             <input id="customPassword" type="text" placeholder="Type your password (e.g. teddy123)" aria-label="Custom password input" />
-            <button class="check-btn" id="checkBtn" type="button">Check & Suggest Stronger Passwords</button>
+            <button class="btn-tonal check-btn" id="checkBtn" type="button">Check & Suggest Stronger Passwords</button>
           </div>
-          <div class="strength" style="margin-top: 0.6rem">
-            <span>Your password strength</span>
+
+          <div class="strength">
+            <span class="strength-title">Your password strength</span>
             <span id="customStrengthBadge" class="strength-badge">Weak</span>
           </div>
+
           <ul id="suggestionList" class="suggestion-list"></ul>
         </div>
 
-        <p class="hint">Tip: use at least 14 characters with mixed character types.</p>
+        <p class="hint">Tip: for better security, use 14+ characters and include lowercase, uppercase, numbers, and symbols.</p>
       </section>
     </main>
 
@@ -350,19 +441,17 @@
       }
 
       /**
-       * Builds the allowed character pool from selected checkboxes.
+       * Builds selected character pool from active checkboxes.
        */
       function getSelectedPool() {
-        let pool = "";
-        Object.keys(options).forEach((key) => {
-          if (options[key].checked) pool += charSets[key];
-        });
-        return pool;
+        return Object.keys(options)
+          .filter((key) => options[key].checked)
+          .map((key) => charSets[key])
+          .join("");
       }
 
       /**
-       * Generates a password based on length and active character sets.
-       * Ensures at least one character from each selected set is included.
+       * Generates a secure password and ensures all selected character types are represented.
        */
       function generatePassword() {
         const length = Number(lengthSlider.value);
@@ -375,20 +464,17 @@
         }
 
         const chars = [];
-
-        // Guarantee one char from each chosen category.
         activeSets.forEach((key) => {
           const set = charSets[key];
           chars.push(set[secureRandomInt(set.length)]);
         });
 
-        // Fill remaining characters from complete pool.
         const pool = getSelectedPool();
         while (chars.length < length) {
           chars.push(pool[secureRandomInt(pool.length)]);
         }
 
-        // Shuffle with Fisher-Yates using secure randomness.
+        // Secure Fisher-Yates shuffle.
         for (let i = chars.length - 1; i > 0; i -= 1) {
           const j = secureRandomInt(i + 1);
           [chars[i], chars[j]] = [chars[j], chars[i]];
@@ -400,7 +486,7 @@
       }
 
       /**
-       * Computes strength level from length + character diversity.
+       * Scores password strength using length and character diversity.
        */
       function getStrengthLevel(password) {
         if (!password) return "Weak";
@@ -413,6 +499,7 @@
 
         if (password.length >= 10) score += 1;
         if (password.length >= 14) score += 1;
+        if (password.length >= 18) score += 1;
         if (hasLower) score += 1;
         if (hasUpper) score += 1;
         if (hasNumber) score += 1;
@@ -424,42 +511,60 @@
       }
 
       /**
-       * Updates a visual badge with text and corresponding color.
+       * Applies strength text and soft semantic colors to badges.
        */
       function updateStrengthBadge(targetBadge, level) {
-        const colorMap = {
-          Weak: "var(--weak)",
-          Medium: "var(--medium)",
-          Strong: "var(--strong)",
+        const map = {
+          Weak: { bg: "var(--weak)", text: "var(--weak-text)" },
+          Medium: { bg: "var(--medium)", text: "var(--medium-text)" },
+          Strong: { bg: "var(--strong)", text: "var(--strong-text)" },
         };
+        const style = map[level] || map.Medium;
 
         targetBadge.textContent = level;
-        targetBadge.style.backgroundColor = colorMap[level] || "var(--medium)";
+        targetBadge.style.backgroundColor = style.bg;
+        targetBadge.style.color = style.text;
       }
 
       /**
-       * Copies current generated password to clipboard.
+       * Copies text to clipboard and provides temporary button feedback.
        */
-      async function copyPassword() {
-        const current = passwordField.value;
-        if (!current || current === "Select at least one option") return;
+      async function copyToClipboard(text, button = null, successText = "Copied!") {
+        if (!text) return false;
 
         try {
-          await navigator.clipboard.writeText(current);
-          copyBtn.textContent = "Copied!";
-          setTimeout(() => {
-            copyBtn.textContent = "Copy";
-          }, 1200);
+          await navigator.clipboard.writeText(text);
+          if (button) {
+            const original = button.textContent;
+            button.textContent = successText;
+            setTimeout(() => {
+              button.textContent = original;
+            }, 1000);
+          }
+          return true;
         } catch {
-          copyBtn.textContent = "Failed";
-          setTimeout(() => {
-            copyBtn.textContent = "Copy";
-          }, 1200);
+          if (button) {
+            const original = button.textContent;
+            button.textContent = "Failed";
+            setTimeout(() => {
+              button.textContent = original;
+            }, 1000);
+          }
+          return false;
         }
       }
 
       /**
-       * Exports generated password as a plain-text file (Notepad friendly).
+       * Copies generated password to clipboard.
+       */
+      async function copyGeneratedPassword() {
+        const current = passwordField.value;
+        if (!current || current === "Select at least one option") return;
+        await copyToClipboard(current, copyBtn);
+      }
+
+      /**
+       * Exports generated password as .txt file (Notepad friendly).
        */
       function exportAsText() {
         const current = passwordField.value;
@@ -476,25 +581,33 @@
       }
 
       /**
-       * Opens a print document so users can save/export as PDF.
+       * Opens print-friendly page so user can save as PDF.
        */
       function exportAsPdf() {
         const current = passwordField.value;
         if (!current || current === "Select at least one option") return;
 
-        const printWindow = window.open("", "_blank", "width=600,height=500");
+        const printWindow = window.open("", "_blank", "width=620,height=520");
         if (!printWindow) return;
 
         printWindow.document.write(`
           <!doctype html>
           <html>
             <head>
+              <meta charset="UTF-8" />
               <title>Generated Password</title>
               <style>
                 body { font-family: Arial, sans-serif; padding: 24px; color: #111827; }
                 .card { border: 1px solid #d1d5db; border-radius: 12px; padding: 18px; }
                 h1 { margin-top: 0; font-size: 20px; }
-                code { font-size: 18px; background: #f3f4f6; padding: 8px 10px; border-radius: 6px; display: inline-block; }
+                code {
+                  font-size: 18px;
+                  background: #f3f4f6;
+                  padding: 8px 10px;
+                  border-radius: 6px;
+                  display: inline-block;
+                  overflow-wrap: anywhere;
+                }
               </style>
             </head>
             <body>
@@ -513,7 +626,7 @@
       }
 
       /**
-       * Toggles between light and dark visual themes.
+       * Toggles between light and dark mode and updates button label.
        */
       function toggleTheme() {
         const isDark = document.body.dataset.theme === "dark";
@@ -522,21 +635,11 @@
       }
 
       /**
-       * Returns transformed and stronger variants from user's base password.
+       * Produces stronger password ideas plus rationale tags.
        */
       function createSuggestions(base) {
-        const core = base.replace(/\s+/g, "").replace(/[^A-Za-z0-9]/g, "");
-        const safeCore = core || "secure";
-
-        // Character substitutions to increase complexity while preserving memorability.
-        const substitutions = {
-          a: "@",
-          e: "3",
-          i: "1",
-          o: "0",
-          s: "$",
-          t: "7",
-        };
+        const core = base.replace(/\s+/g, "").replace(/[^A-Za-z0-9]/g, "") || "secure";
+        const substitutions = { a: "@", e: "3", i: "1", o: "0", s: "$", t: "7" };
 
         const mutate = (word) =>
           word
@@ -544,38 +647,70 @@
             .map((ch) => substitutions[ch.toLowerCase()] || ch)
             .join("");
 
-        const reversed = safeCore.split("").reverse().join("");
-        const words = ["bear", "shield", "vault", "storm", "fox"];
+        const reversed = core.split("").reverse().join("");
+        const keywords = ["bear", "shield", "storm", "vault", "orbit"];
 
-        const suggestionA = `${mutate(safeCore)}@${Math.floor(10000 + secureRandomInt(90000))}!`;
-        const suggestionB = `${safeCore[0]?.toUpperCase() || "S"}${safeCore.slice(1)}#${words[secureRandomInt(words.length)]}${secureRandomInt(1000)}`;
-        const suggestionC = `${mutate(safeCore)}_${reversed}!${Math.floor(100 + secureRandomInt(900))}`;
+        const candidateA = `${mutate(core)}@${10000 + secureRandomInt(90000)}!`;
+        const candidateB = `${core[0]?.toUpperCase() || "S"}${core.slice(1)}#${keywords[secureRandomInt(keywords.length)]}${100 + secureRandomInt(900)}`;
+        const candidateC = `${mutate(core)}_${reversed}!${100 + secureRandomInt(900)}`;
 
-        return [suggestionA, suggestionB, suggestionC].map((p) => (p.length < 14 ? `${p}${secureRandomInt(9)}A!` : p));
+        const padded = [candidateA, candidateB, candidateC].map((item) =>
+          item.length < 14 ? `${item}${secureRandomInt(9)}A!` : item
+        );
+
+        return [
+          { password: padded[0], reason: "Added substitutions + symbol + long random number" },
+          { password: padded[1], reason: "Added uppercase, separator, keyword, and extra digits" },
+          { password: padded[2], reason: "Combined transformed and reversed phrase for complexity" },
+        ];
       }
 
       /**
-       * Checks custom password strength and renders strengthening suggestions.
+       * Renders suggestion cards with rationale and copy action.
+       */
+      function renderSuggestions(suggestions) {
+        suggestionList.innerHTML = "";
+
+        suggestions.forEach((item) => {
+          const li = document.createElement("li");
+          li.className = "suggestion-item";
+
+          const password = document.createElement("div");
+          password.className = "suggestion-password";
+          password.textContent = item.password;
+
+          const meta = document.createElement("div");
+          meta.className = "suggestion-meta";
+
+          const reason = document.createElement("span");
+          reason.textContent = item.reason;
+
+          const copy = document.createElement("button");
+          copy.type = "button";
+          copy.className = "btn-outline mini-copy";
+          copy.textContent = "Copy suggestion";
+          copy.addEventListener("click", () => copyToClipboard(item.password, copy, "Copied"));
+
+          meta.append(reason, copy);
+          li.append(password, meta);
+          suggestionList.appendChild(li);
+        });
+      }
+
+      /**
+       * Evaluates custom password and shows tailored stronger suggestions.
        */
       function checkCustomPassword() {
         const inputPassword = customPasswordInput.value.trim();
         if (!inputPassword) {
           updateStrengthBadge(customStrengthBadge, "Weak");
-          suggestionList.innerHTML = "<li>Type a password to see strength suggestions.</li>";
+          suggestionList.innerHTML =
+            '<li class="suggestion-item"><div class="suggestion-meta">Type a password to see stronger suggestions.</div></li>';
           return;
         }
 
-        const level = getStrengthLevel(inputPassword);
-        updateStrengthBadge(customStrengthBadge, level);
-
-        const suggestions = createSuggestions(inputPassword);
-        suggestionList.innerHTML = "";
-
-        suggestions.forEach((suggestion) => {
-          const li = document.createElement("li");
-          li.textContent = suggestion;
-          suggestionList.appendChild(li);
-        });
+        updateStrengthBadge(customStrengthBadge, getStrengthLevel(inputPassword));
+        renderSuggestions(createSuggestions(inputPassword));
       }
 
       lengthSlider.addEventListener("input", () => {
@@ -584,7 +719,7 @@
       });
 
       generateBtn.addEventListener("click", generatePassword);
-      copyBtn.addEventListener("click", copyPassword);
+      copyBtn.addEventListener("click", copyGeneratedPassword);
       themeToggle.addEventListener("click", toggleTheme);
       exportTxtBtn.addEventListener("click", exportAsText);
       exportPdfBtn.addEventListener("click", exportAsPdf);
@@ -595,7 +730,7 @@
         input.addEventListener("change", generatePassword);
       });
 
-      // Initial data on first load.
+      // Initialize with a generated password and checker hint.
       generatePassword();
       checkCustomPassword();
     </script>
